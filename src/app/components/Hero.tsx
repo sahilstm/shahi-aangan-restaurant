@@ -1,8 +1,20 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { Sparkles, Star, Award, Heart, ArrowRight, Play } from "lucide-react";
-import { useRef } from "react";
+import { useRef, useMemo } from "react";
+import { useScroll, useTransform } from "framer-motion";
+
+const generateParticles = () => {
+  return Array.from({ length: 20 }, (_, i) => ({
+    id: i,
+    x: Math.random() * 20 - 10,
+    duration: 3 + Math.random() * 2,
+    delay: Math.random() * 2,
+    left: `${Math.random() * 100}%`,
+    top: `${Math.random() * 100}%`,
+  }));
+};
 
 const Hero = () => {
   const ref = useRef(null);
@@ -13,6 +25,8 @@ const Hero = () => {
 
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
+
+  const particles = useMemo(() => generateParticles(), []);
 
   const floatingAnimation = {
     y: [0, -20, 0],
@@ -49,23 +63,24 @@ const Hero = () => {
           className="absolute -bottom-40 -right-40 w-96 h-96 bg-gradient-to-r from-blue-500/20 to-primary/20 blur-3xl"
         />
 
-        {[...Array(20)].map((_, i) => (
+        {/* Floating Particles */}
+        {particles.map((particle) => (
           <motion.div
-            key={i}
+            key={particle.id}
             animate={{
               y: [0, -30, 0],
-              x: [0, Math.random() * 20 - 10, 0],
+              x: [0, particle.x, 0],
               opacity: [0.2, 0.5, 0.2],
             }}
             transition={{
-              duration: 3 + Math.random() * 2,
+              duration: particle.duration,
               repeat: Infinity,
-              delay: Math.random() * 2,
+              delay: particle.delay,
             }}
             className="absolute w-2 h-2 bg-primary rounded-full"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
+              left: particle.left,
+              top: particle.top,
             }}
           />
         ))}
@@ -89,7 +104,7 @@ const Hero = () => {
             >
               <Sparkles className="text-primary w-5 h-5 animate-pulse" />
               <span className="text-sm font-semibold text-primary">
-                Sitamarhi's Pride Since 2025
+                Sitamarhi&apos;s Pride Since 2025
               </span>
             </motion.div>
 

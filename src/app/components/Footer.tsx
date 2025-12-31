@@ -1,16 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  ChefHat,
-  Heart,
-  Instagram,
-  Facebook,
-  Twitter,
-  Mail,
-  Phone,
-  MapPin,
-} from "lucide-react";
+import { ChefHat, Heart, Instagram, Facebook, Twitter } from "lucide-react";
 
 const Footer = () => {
   const footerLinks = {
@@ -76,7 +67,7 @@ const Footer = () => {
             </div>
           </div>
 
-          {Object.entries(footerLinks).map(([title, links], index) => (
+          {Object.entries(footerLinks).map(([title, links]) => (
             <div key={title}>
               <h4 className="text-lg font-bold mb-4 text-gray-900 dark:text-white">
                 {title}

@@ -144,7 +144,7 @@ const About = () => {
                 flavors of traditional recipes to modern dining.
               </p>
               <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-                Today, we're proud to be Sitamarhi's favorite dining
+                Today, we&apos;re proud to be Sitamarhi&apos;s favorite dining
                 destination, serving over 10,000 happy customers with our
                 signature dishes and warm hospitality.
               </p>

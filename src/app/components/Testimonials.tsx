@@ -60,7 +60,7 @@ const Testimonials = () => {
       nameHindi: "अनीता देवी",
       location: "Sheohar",
       rating: 5,
-      text: "Fresh ingredients, authentic recipes, and lovely staff. My family's favorite restaurant in the region!",
+      text: "Fresh ingredients, authentic recipes, and lovely staff. My family favorite restaurant in the region!",
       textHindi: "ताजा सामग्री और प्रामाणिक व्यंजन!",
       avatar: "👩‍🦰",
       role: "Home Maker",
@@ -137,10 +137,10 @@ const Testimonials = () => {
                 </div>
 
                 <p className="text-gray-700 dark:text-gray-300 mb-4 italic relative z-10">
-                  "{testimonial.text}"
+                  &ldquo;{testimonial.text}&rdquo;
                 </p>
                 <p className="text-primary text-sm mb-6 relative z-10">
-                  "{testimonial.textHindi}"
+                  &ldquo;{testimonial.textHindi}&rdquo;
                 </p>
 
                 <div className="flex items-center gap-3 relative z-10">
