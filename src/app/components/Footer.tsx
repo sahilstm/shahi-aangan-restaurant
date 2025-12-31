@@ -1,65 +1,65 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { 
-  ChefHat, 
-  Heart, 
-  Instagram, 
-  Facebook, 
-  Twitter, 
+import { motion } from "framer-motion";
+import {
+  ChefHat,
+  Heart,
+  Instagram,
+  Facebook,
+  Twitter,
   Youtube,
   MapPin,
   Phone,
   Mail,
   ArrowUp,
-  ExternalLink
-} from 'lucide-react';
+  ExternalLink,
+} from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   const footerSections = [
     {
-      title: 'Quick Links',
+      title: "Quick Links",
       links: [
-        { name: 'Home', href: '#home' },
-        { name: 'About Us', href: '#about' },
-        { name: 'Our Menu', href: '#menu' },
-        { name: 'Gallery', href: '#gallery' },
-        { name: 'Contact', href: '#contact' },
+        { name: "Home", href: "#home" },
+        { name: "About Us", href: "#about" },
+        { name: "Our Menu", href: "#menu" },
+        { name: "Gallery", href: "#gallery" },
+        { name: "Contact", href: "#contact" },
       ],
     },
     {
-      title: 'Our Menu',
+      title: "Our Menu",
       links: [
-        { name: 'Starters', href: '#menu' },
-        { name: 'Main Course', href: '#menu' },
-        { name: 'Biryani Special', href: '#menu' },
-        { name: 'Breads', href: '#menu' },
-        { name: 'Desserts', href: '#menu' },
+        { name: "Starters", href: "#menu" },
+        { name: "Main Course", href: "#menu" },
+        { name: "Biryani Special", href: "#menu" },
+        { name: "Breads", href: "#menu" },
+        { name: "Desserts", href: "#menu" },
       ],
     },
     {
-      title: 'Support',
+      title: "Support",
       links: [
-        { name: 'FAQs', href: '#' },
-        { name: 'Privacy Policy', href: '#' },
-        { name: 'Terms & Conditions', href: '#' },
-        { name: 'Refund Policy', href: '#' },
-        { name: 'Careers', href: '#' },
+        { name: "FAQs", href: "#" },
+        { name: "Privacy Policy", href: "#" },
+        { name: "Terms & Conditions", href: "#" },
+        { name: "Refund Policy", href: "#" },
+        { name: "Careers", href: "#" },
       ],
     },
   ];
 
   const socialLinks = [
-    { icon: Facebook, href: '#', label: 'Facebook' },
-    { icon: Instagram, href: '#', label: 'Instagram' },
-    { icon: Twitter, href: '#', label: 'Twitter' },
-    { icon: Youtube, href: '#', label: 'YouTube' },
+    { icon: Facebook, href: "#", label: "Facebook" },
+    { icon: Instagram, href: "#", label: "Instagram" },
+    { icon: Twitter, href: "#", label: "Twitter" },
+    { icon: Youtube, href: "#", label: "YouTube" },
   ];
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -83,7 +83,8 @@ const Footer = () => {
                   Subscribe to Our Newsletter
                 </h3>
                 <p className="text-gray-400">
-                  Get exclusive offers, new menu updates & foodie tips delivered to your inbox!
+                  Get exclusive offers, new menu updates & foodie tips delivered
+                  to your inbox!
                 </p>
               </div>
               <div>
@@ -123,7 +124,11 @@ const Footer = () => {
                 <div className="relative">
                   <motion.div
                     animate={{ rotate: 360 }}
-                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                    transition={{
+                      duration: 20,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
                     className="absolute inset-0 bg-gradient-to-r from-primary to-primary-light rounded-full blur-lg opacity-50 group-hover:opacity-80"
                   />
                   <div className="relative p-3 ultra-glass rounded-xl">
@@ -134,27 +139,39 @@ const Footer = () => {
                   <h2 className="text-3xl font-bold text-gradient font-[family-name:var(--font-playfair)]">
                     शाही आगन
                   </h2>
-                  <p className="text-xs text-gray-500 tracking-widest">ROYAL DINING SINCE 2010</p>
+                  <p className="text-xs text-gray-500 tracking-widest">
+                    ROYAL DINING SINCE 2010
+                  </p>
                 </div>
               </a>
             </motion.div>
 
             <p className="text-gray-400 mb-6 leading-relaxed max-w-md">
-              Experience the royal flavors of authentic Indian cuisine in the heart of Sitamarhi. 
-              Where tradition meets taste, and every meal becomes a celebration.
+              Experience the royal flavors of authentic Indian cuisine in the
+              heart of Sitamarhi. Where tradition meets taste, and every meal
+              becomes a celebration.
             </p>
 
             {/* Contact Info */}
             <div className="space-y-3 mb-6">
-              <a href="https://maps.google.com" className="flex items-center gap-3 text-gray-400 hover:text-primary transition-colors">
+              <a
+                href="https://maps.google.com"
+                className="flex items-center gap-3 text-gray-400 hover:text-primary transition-colors"
+              >
                 <MapPin className="w-5 h-5 text-primary" />
                 <span>Main Road, Sitamarhi, Bihar 843302</span>
               </a>
-              <a href="tel:+919876543210" className="flex items-center gap-3 text-gray-400 hover:text-primary transition-colors">
+              <a
+                href="tel:+919876543210"
+                className="flex items-center gap-3 text-gray-400 hover:text-primary transition-colors"
+              >
                 <Phone className="w-5 h-5 text-primary" />
                 <span>+91 98765 43210</span>
               </a>
-              <a href="mailto:info@shaahiaagan.com" className="flex items-center gap-3 text-gray-400 hover:text-primary transition-colors">
+              <a
+                href="mailto:info@shaahiaagan.com"
+                className="flex items-center gap-3 text-gray-400 hover:text-primary transition-colors"
+              >
                 <Mail className="w-5 h-5 text-primary" />
                 <span>info@shaahiaagan.com</span>
               </a>
@@ -226,24 +243,33 @@ const Footer = () => {
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              className="flex items-center gap-2 text-sm text-gray-500"
+              className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-2"
             >
-              Made with 
-              <motion.span
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ duration: 1, repeat: Infinity }}
+              Made with{" "}
+              <Heart className="w-4 h-4 text-red-500 fill-red-500 animate-pulse" />{" "}
+              by
+              <a
+                href="https://levelupsolution.in/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ml-1 font-semibold text-primary hover:underline hover:text-primary-light transition-colors"
               >
-                <Heart className="w-4 h-4 text-red-500 fill-red-500" />
-              </motion.span>
-              in Sitamarhi, Bihar
+                LevelUp Solution
+              </a>
             </motion.p>
 
             <div className="flex items-center gap-4 text-sm text-gray-500">
-              <a href="#" className="hover:text-primary transition-colors flex items-center gap-1">
+              <a
+                href="#"
+                className="hover:text-primary transition-colors flex items-center gap-1"
+              >
                 Privacy <ExternalLink className="w-3 h-3" />
               </a>
               <span>•</span>
-              <a href="#" className="hover:text-primary transition-colors flex items-center gap-1">
+              <a
+                href="#"
+                className="hover:text-primary transition-colors flex items-center gap-1"
+              >
                 Terms <ExternalLink className="w-3 h-3" />
               </a>
             </div>
