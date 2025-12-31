@@ -245,9 +245,8 @@ const Footer = () => {
               viewport={{ once: true }}
               className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-2"
             >
-              Made with{" "}
+              Made by
               <Heart className="w-4 h-4 text-red-500 fill-red-500 animate-pulse" />{" "}
-              by
               <a
                 href="https://levelupsolution.in/"
                 target="_blank"
