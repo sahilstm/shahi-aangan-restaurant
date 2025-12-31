@@ -1,86 +1,126 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import { Star, Quote } from "lucide-react";
+import { motion, AnimatePresence } from 'framer-motion';
+import { Star, Quote, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 const Testimonials = () => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
+
   const testimonials = [
     {
-      name: "Rajesh Kumar",
-      nameHindi: "राजेश कुमार",
-      location: "Sitamarhi",
+      id: 1,
+      name: 'Rajesh Kumar',
+      nameHindi: 'राजेश कुमार',
+      location: 'Sitamarhi',
       rating: 5,
-      text: "Best biryani in town! The flavors are absolutely authentic and the service is top-notch. Highly recommended!",
-      textHindi: "शहर की सबसे अच्छी बिरयानी!",
-      avatar: "👨",
-      role: "Food Blogger",
+      text: 'Best biryani I have ever had! The flavors are absolutely authentic and the service is exceptional. This place has become our family favorite for all celebrations.',
+      textHindi: 'अब तक की सबसे अच्छी बिरयानी! स्वाद बिल्कुल प्रामाणिक है।',
+      avatar: '👨',
+      role: 'Food Blogger',
+      date: '2 weeks ago',
     },
     {
-      name: "Priya Singh",
-      nameHindi: "प्रिया सिंह",
-      location: "Sitamarhi",
+      id: 2,
+      name: 'Priya Singh',
+      nameHindi: 'प्रिया सिंह',
+      location: 'Muzaffarpur',
       rating: 5,
-      text: "Wonderful ambience and delicious food. Perfect place for family gatherings. The staff is very courteous.",
-      textHindi: "बहुत ही शानदार माहौल और स्वादिष्ट खाना!",
-      avatar: "👩",
-      role: "Regular Customer",
+      text: 'Wonderful ambiance and delicious food. Perfect for family gatherings and special occasions. The staff is incredibly courteous and attentive.',
+      textHindi: 'शानदार माहौल और स्वादिष्ट खाना। परिवार के लिए एकदम सही।',
+      avatar: '👩',
+      role: 'Regular Customer',
+      date: '1 month ago',
     },
     {
-      name: "Amit Sharma",
-      nameHindi: "अमित शर्मा",
-      location: "Muzaffarpur",
+      id: 3,
+      name: 'Amit Sharma',
+      nameHindi: 'अमित शर्मा',
+      location: 'Darbhanga',
       rating: 5,
-      text: "Authentic flavors, great service! I drive from Muzaffarpur just to eat here. Worth every mile!",
-      textHindi: "प्रामाणिक स्वाद, शानदार सेवा!",
-      avatar: "🧑",
-      role: "Food Enthusiast",
+      text: 'Authentic flavors that remind me of my grandmother\'s cooking. I drive 50km just to eat here. The Maharaja Thali is absolutely worth every penny!',
+      textHindi: 'दादी माँ के खाने जैसा स्वाद। 50 किमी दूर से आता हूँ!',
+      avatar: '🧑',
+      role: 'Food Enthusiast',
+      date: '3 weeks ago',
     },
     {
-      name: "Sneha Kumari",
-      nameHindi: "स्नेहा कुमारी",
-      location: "Darbhanga",
+      id: 4,
+      name: 'Sneha Kumari',
+      nameHindi: 'स्नेहा कुमारी',
+      location: 'Sitamarhi',
       rating: 5,
-      text: "The paneer tikka is to die for! Amazing food quality and reasonable prices. Best restaurant experience!",
-      textHindi: "पनीर टिक्का बेहतरीन है!",
-      avatar: "👧",
-      role: "College Student",
+      text: 'The paneer tikka is to die for! Amazing quality, reasonable prices, and the best part - they use fresh ingredients. Highly recommend the desserts too!',
+      textHindi: 'पनीर टिक्का लाजवाब है! ताजा सामग्री का इस्तेमाल करते हैं।',
+      avatar: '👧',
+      role: 'College Student',
+      date: '1 week ago',
     },
     {
-      name: "Vikash Yadav",
-      nameHindi: "विकास यादव",
-      location: "Sitamarhi",
+      id: 5,
+      name: 'Vikash Yadav',
+      nameHindi: 'विकाश यादव',
+      location: 'Patna',
       rating: 5,
-      text: "Royal treatment for royal taste! The ambiance is perfect for dates and celebrations. Love this place!",
-      textHindi: "शाही स्वाद के लिए शाही सेवा!",
-      avatar: "👦",
-      role: "Marketing Professional",
-    },
-    {
-      name: "Anita Devi",
-      nameHindi: "अनीता देवी",
-      location: "Sheohar",
-      rating: 5,
-      text: "Fresh ingredients, authentic recipes, and lovely staff. My family favorite restaurant in the region!",
-      textHindi: "ताजा सामग्री और प्रामाणिक व्यंजन!",
-      avatar: "👩‍🦰",
-      role: "Home Maker",
+      text: 'Royal treatment for royal taste! Visited during my trip to Sitamarhi and was blown away. The butter chicken is hands down the best in Bihar!',
+      textHindi: 'शाही स्वाद के लिए शाही सेवा! बटर चिकन बिहार में सबसे अच्छा!',
+      avatar: '👦',
+      role: 'Business Traveler',
+      date: '2 months ago',
     },
   ];
 
+  const nextTestimonial = () => {
+    setDirection(1);
+    setActiveIndex((prev) => (prev + 1) % testimonials.length);
+  };
+
+  const prevTestimonial = () => {
+    setDirection(-1);
+    setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  };
+
+  // Auto-slide
+  useEffect(() => {
+    const interval = setInterval(nextTestimonial, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const slideVariants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 1000 : -1000,
+      opacity: 0,
+      scale: 0.8,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+      scale: 1,
+    },
+    exit: (direction: number) => ({
+      x: direction < 0 ? 1000 : -1000,
+      opacity: 0,
+      scale: 0.8,
+    }),
+  };
+
   return (
     <section className="py-20 md:py-32 relative overflow-hidden">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {/* Background */}
+      <div className="absolute inset-0 pointer-events-none">
         <motion.div
           animate={{
-            scale: [1, 1.3, 1],
+            scale: [1, 1.2, 1],
             rotate: [0, 180, 360],
           }}
-          transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-          className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"
+          transition={{ duration: 40, repeat: Infinity }}
+          className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-3xl"
         />
       </div>
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -91,118 +131,166 @@ const Testimonials = () => {
             initial={{ opacity: 0, scale: 0.5 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="inline-block mb-4"
+            className="inline-flex items-center gap-2 px-5 py-2 ultra-glass rounded-full mb-6"
           >
-            <div className="px-4 py-2 glass rounded-full inline-flex items-center gap-2">
-              <span className="text-2xl">💬</span>
-              <span className="text-primary font-semibold">Testimonials</span>
-            </div>
+            <span className="text-2xl">💬</span>
+            <span className="text-primary font-semibold">Testimonials</span>
           </motion.div>
 
-          <h2 className="text-4xl md:text-6xl font-bold mb-4 text-gray-900 dark:text-white font-[family-name:var(--font-playfair)]">
-            What Our <span className="text-gradient">Customers Say</span>
+          <h2 className="section-title text-gray-900 dark:text-white">
+            What Our{' '}
+            <span className="text-gradient">Customers Say</span>
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-400">
-            ग्राहकों की राय
+          <p className="section-subtitle mt-4">
+            ग्राहकों की राय - Real stories from real food lovers
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {testimonials.map((testimonial, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              whileHover={{ scale: 1.05, rotateY: 5 }}
-              className="group relative"
-            >
-              <div className="glass card-3d rounded-2xl p-6 h-full relative overflow-hidden">
-                <div className="absolute top-4 right-4 opacity-10">
-                  <Quote className="w-20 h-20 text-primary" />
+        {/* Main Testimonial Carousel */}
+        <div className="relative max-w-4xl mx-auto">
+          {/* Navigation Buttons */}
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={prevTestimonial}
+            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 z-10 p-3 ultra-glass rounded-full shadow-xl"
+          >
+            <ChevronLeft className="w-6 h-6 text-primary" />
+          </motion.button>
+
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={nextTestimonial}
+            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 z-10 p-3 ultra-glass rounded-full shadow-xl"
+          >
+            <ChevronRight className="w-6 h-6 text-primary" />
+          </motion.button>
+
+          {/* Testimonial Card */}
+          <div className="overflow-hidden">
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={activeIndex}
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                className="ultra-glass rounded-[40px] p-8 md:p-12 relative"
+              >
+                {/* Quote Icon */}
+                <div className="absolute top-8 right-8 opacity-10">
+                  <Quote className="w-24 h-24 text-primary" />
                 </div>
 
-                <div className="flex gap-1 mb-4 relative z-10">
-                  {[...Array(testimonial.rating)].map((_, i) => (
+                {/* Content */}
+                <div className="relative z-10">
+                  {/* Rating */}
+                  <div className="flex justify-center gap-1 mb-6">
+                    {[...Array(testimonials[activeIndex].rating)].map((_, i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: i * 0.1 }}
+                      >
+                        <Star className="w-6 h-6 text-yellow-500 fill-yellow-500" />
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  {/* Review Text */}
+                  <blockquote className="text-center mb-8">
+                    <p className="text-xl md:text-2xl text-gray-300 italic leading-relaxed mb-4">
+                      &ldquo;{testimonials[activeIndex].text}&rdquo;
+                    </p>
+                    <p className="text-primary text-lg">
+                      &ldquo;{testimonials[activeIndex].textHindi}&rdquo;
+                    </p>
+                  </blockquote>
+
+                  {/* Author */}
+                  <div className="flex flex-col items-center">
                     <motion.div
-                      key={i}
-                      initial={{ opacity: 0, scale: 0 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: index * 0.1 + i * 0.1 }}
+                      animate={{
+                        scale: [1, 1.1, 1],
+                        rotate: [0, 5, -5, 0],
+                      }}
+                      transition={{ duration: 3, repeat: Infinity }}
+                      className="w-20 h-20 ultra-glass rounded-full flex items-center justify-center text-4xl mb-4"
                     >
-                      <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />
+                      {testimonials[activeIndex].avatar}
                     </motion.div>
-                  ))}
-                </div>
-
-                <p className="text-gray-700 dark:text-gray-300 mb-4 italic relative z-10">
-                  &ldquo;{testimonial.text}&rdquo;
-                </p>
-                <p className="text-primary text-sm mb-6 relative z-10">
-                  &ldquo;{testimonial.textHindi}&rdquo;
-                </p>
-
-                <div className="flex items-center gap-3 relative z-10">
-                  <motion.div
-                    whileHover={{ scale: 1.2, rotate: 360 }}
-                    className="w-12 h-12 glass rounded-full flex items-center justify-center text-2xl"
-                  >
-                    {testimonial.avatar}
-                  </motion.div>
-                  <div>
-                    <h4 className="font-bold text-gray-900 dark:text-white">
-                      {testimonial.name}
+                    <h4 className="text-xl font-bold text-white">
+                      {testimonials[activeIndex].name}
                     </h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      {testimonial.role} • {testimonial.location}
+                    <p className="text-sm text-primary mb-1">
+                      {testimonials[activeIndex].nameHindi}
+                    </p>
+                    <p className="text-sm text-gray-400">
+                      {testimonials[activeIndex].role} • {testimonials[activeIndex].location}
+                    </p>
+                    <p className="text-xs text-gray-500 mt-2">
+                      {testimonials[activeIndex].date}
                     </p>
                   </div>
                 </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
 
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/0 via-primary/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              </div>
-
-              <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-purple-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
-            </motion.div>
-          ))}
+          {/* Dots Indicator */}
+          <div className="flex justify-center gap-2 mt-8">
+            {testimonials.map((_, index) => (
+              <motion.button
+                key={index}
+                whileHover={{ scale: 1.2 }}
+                onClick={() => {
+                  setDirection(index > activeIndex ? 1 : -1);
+                  setActiveIndex(index);
+                }}
+                className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                  index === activeIndex
+                    ? 'bg-primary w-8'
+                    : 'bg-gray-600 hover:bg-gray-500'
+                }`}
+              />
+            ))}
+          </div>
         </div>
 
+        {/* Rating Summary */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="glass rounded-3xl p-8 mt-12 text-center"
+          className="mt-16 grid md:grid-cols-3 gap-6 max-w-3xl mx-auto"
         >
-          <div className="flex flex-col md:flex-row items-center justify-center gap-8">
-            <div>
-              <motion.div
-                animate={{ scale: [1, 1.1, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="text-6xl font-bold text-gradient mb-2"
-              >
-                4.9
-              </motion.div>
-              <div className="flex justify-center gap-1 mb-2">
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    className="w-6 h-6 text-yellow-500 fill-yellow-500"
-                  />
-                ))}
+          {[
+            { platform: 'Google', rating: '4.9', reviews: '2,847', emoji: '🔍' },
+            { platform: 'Zomato', rating: '4.8', reviews: '1,956', emoji: '🍽️' },
+            { platform: 'TripAdvisor', rating: '4.9', reviews: '892', emoji: '✈️' },
+          ].map((item, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              whileHover={{ scale: 1.05 }}
+              className="ultra-glass rounded-2xl p-6 text-center"
+            >
+              <span className="text-3xl mb-2 block">{item.emoji}</span>
+              <p className="text-sm text-gray-400 mb-2">{item.platform}</p>
+              <div className="flex items-center justify-center gap-2">
+                <span className="text-2xl font-bold text-gradient">{item.rating}</span>
+                <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />
               </div>
-              <p className="text-gray-600 dark:text-gray-400">Average Rating</p>
-            </div>
-
-            <div className="text-left">
-              <p className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                10,000+ Reviews
-              </p>
-              <p className="text-gray-600 dark:text-gray-400">
-                Trusted by thousands of satisfied customers
-              </p>
-            </div>
-          </div>
+              <p className="text-xs text-gray-500 mt-1">{item.reviews} reviews</p>
+            </motion.div>
+          ))}
         </motion.div>
       </div>
     </section>

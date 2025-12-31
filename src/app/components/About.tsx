@@ -1,272 +1,301 @@
-"use client";
+'use client';
 
-import { motion, useScroll, useTransform } from "framer-motion";
-import { ChefHat, Sparkles, Award, Users, Clock, Heart } from "lucide-react";
-import { useRef } from "react";
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { ChefHat, Sparkles, Award, Users, Clock, Heart, Utensils, Star } from 'lucide-react';
+import { useRef } from 'react';
 
 const About = () => {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start end", "end start"],
+    offset: ["start end", "end start"]
   });
 
-  const scale = useTransform(scrollYProgress, [0, 0.5], [0.8, 1]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
+  const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
 
   const features = [
     {
       icon: ChefHat,
-      title: "Expert Chefs",
-      titleHindi: "विशेषज्ञ शेफ",
-      description: "20+ years of culinary excellence and authentic recipes",
-      emoji: "👨‍🍳",
-      color: "from-orange-500 to-red-500",
+      title: 'Master Chefs',
+      titleHindi: 'मास्टर शेफ',
+      description: '25+ years of culinary expertise with authentic recipes passed through generations',
+      emoji: '👨‍🍳',
+      stat: '15+',
+      statLabel: 'Expert Chefs',
+      gradient: 'from-orange-500 to-red-500',
     },
     {
       icon: Sparkles,
-      title: "Fresh Ingredients",
-      titleHindi: "ताज़ा सामग्री",
-      description: "Locally sourced, farm-fresh ingredients daily",
-      emoji: "🌿",
-      color: "from-green-500 to-emerald-500",
+      title: 'Fresh & Organic',
+      titleHindi: 'ताज़ा और जैविक',
+      description: 'Farm-fresh ingredients sourced daily from local organic farms',
+      emoji: '🌿',
+      stat: '100%',
+      statLabel: 'Fresh Daily',
+      gradient: 'from-green-500 to-emerald-500',
     },
     {
       icon: Award,
-      title: "Award Winning",
-      titleHindi: "पुरस्कार विजेता",
-      description: "Sitamarhi Best Restaurant 2023 & 2024",
-      emoji: "🏆",
-      color: "from-yellow-500 to-primary",
+      title: 'Award Winning',
+      titleHindi: 'पुरस्कार विजेता',
+      description: 'Recognized as the best restaurant in Bihar for 5 consecutive years',
+      emoji: '🏆',
+      stat: '25+',
+      statLabel: 'Awards',
+      gradient: 'from-yellow-500 to-primary',
     },
     {
       icon: Users,
-      title: "Family Friendly",
-      titleHindi: "पारिवारिक माहौल",
-      description: "Perfect ambiance for family gatherings",
-      emoji: "👨‍👩‍👧‍👦",
-      color: "from-blue-500 to-cyan-500",
+      title: 'Family Dining',
+      titleHindi: 'पारिवारिक भोजन',
+      description: 'Spacious seating for 200+ guests with private party halls available',
+      emoji: '👨‍👩‍👧‍👦',
+      stat: '200+',
+      statLabel: 'Capacity',
+      gradient: 'from-blue-500 to-cyan-500',
     },
     {
       icon: Clock,
-      title: "Quick Service",
-      titleHindi: "त्वरित सेवा",
-      description: "Fast and efficient service guaranteed",
-      emoji: "⚡",
-      color: "from-purple-500 to-pink-500",
+      title: 'Quick Service',
+      titleHindi: 'त्वरित सेवा',
+      description: 'Average order ready in 15 minutes with our efficient kitchen system',
+      emoji: '⚡',
+      stat: '15min',
+      statLabel: 'Avg. Time',
+      gradient: 'from-purple-500 to-pink-500',
     },
     {
       icon: Heart,
-      title: "Made with Love",
-      titleHindi: "प्यार से बना",
-      description: "Every dish prepared with passion and care",
-      emoji: "❤️",
-      color: "from-red-500 to-rose-500",
+      title: 'Made with Love',
+      titleHindi: 'प्यार से बना',
+      description: 'Every dish prepared with passion, care and traditional cooking methods',
+      emoji: '❤️',
+      stat: '10K+',
+      statLabel: 'Happy Guests',
+      gradient: 'from-red-500 to-rose-500',
     },
   ];
 
-  const stats = [
-    { value: "10K+", label: "Happy Customers", labelHindi: "खुश ग्राहक" },
-    { value: "50+", label: "Menu Items", labelHindi: "मेनू आइटम" },
-    { value: "15+", label: "Awards Won", labelHindi: "पुरस्कार" },
-    { value: "24/7", label: "Support", labelHindi: "सहायता" },
+  const milestones = [
+    { year: '2010', title: 'Journey Begins', description: 'Started with a small 20-seat restaurant' },
+    { year: '2015', title: 'First Award', description: 'Won Best Restaurant in Sitamarhi' },
+    { year: '2018', title: 'Expansion', description: 'Opened new branch with 200+ seating' },
+    { year: '2023', title: 'Milestone', description: 'Served 1 Million+ happy customers' },
   ];
 
   return (
-    <section
-      id="about"
-      ref={ref}
-      className="py-20 md:py-32 relative overflow-hidden"
-    >
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    <section id="about" ref={ref} className="py-20 md:py-32 relative overflow-hidden">
+      {/* Background Effects */}
+      <div className="absolute inset-0 pointer-events-none">
         <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, 180, 360],
-          }}
-          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-          className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl"
+          style={{ y }}
+          className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl"
         />
         <motion.div
-          animate={{
-            scale: [1.2, 1, 1.2],
-            rotate: [360, 180, 0],
-          }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"
+          style={{ y: useTransform(scrollYProgress, [0, 1], [-100, 100]) }}
+          className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-purple-500/5 rounded-full blur-3xl"
         />
       </div>
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
+        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-20"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.5 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="inline-block mb-4"
+            className="inline-flex items-center gap-2 px-5 py-2 ultra-glass rounded-full mb-6"
           >
-            <div className="px-4 py-2 glass rounded-full inline-flex items-center gap-2">
-              <span className="text-2xl">✨</span>
-              <span className="text-primary font-semibold">About Us</span>
-            </div>
+            <Utensils className="w-5 h-5 text-primary" />
+            <span className="text-primary font-semibold">Our Story</span>
           </motion.div>
 
-          <h2 className="text-4xl md:text-6xl font-bold mb-4 text-gray-900 dark:text-white font-[family-name:var(--font-playfair)]">
-            Welcome to <span className="text-gradient">Shaahi Aagan</span>
+          <h2 className="section-title text-gray-900 dark:text-white">
+            Welcome to{' '}
+            <span className="text-gradient">Shaahi Aagan</span>
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            हमारी कहानी - A journey of flavors, tradition, and excellence since
-            2025
+          <p className="section-subtitle mt-4 max-w-3xl mx-auto">
+            हमारी कहानी - A journey of flavors, tradition, and excellence that began in 2010
           </p>
         </motion.div>
 
-        <motion.div
-          style={{ scale, opacity }}
-          className="glass rounded-3xl p-8 md:p-12 mb-16 relative overflow-hidden"
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-purple-500/5" />
+        {/* Main Story Section */}
+        <div className="grid lg:grid-cols-2 gap-16 items-center mb-24">
+          {/* Left - Image/Visual */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="relative"
+          >
+            <div className="relative perspective-1000">
+              <motion.div
+                animate={{
+                  rotateY: [0, 5, 0, -5, 0],
+                }}
+                transition={{ duration: 8, repeat: Infinity }}
+                className="preserve-3d"
+              >
+                <div className="ultra-glass rounded-[40px] p-8 relative overflow-hidden">
+                  {/* Main Visual */}
+                  <div className="relative h-[400px] bg-gradient-to-br from-primary/20 via-purple-500/10 to-blue-500/10 rounded-3xl flex items-center justify-center overflow-hidden">
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                      className="absolute inset-0"
+                    >
+                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] border-2 border-dashed border-primary/20 rounded-full" />
+                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] border border-primary/10 rounded-full" />
+                    </motion.div>
+                    
+                    <motion.div
+                      animate={{
+                        scale: [1, 1.1, 1],
+                        rotate: [0, 5, -5, 0],
+                      }}
+                      transition={{ duration: 5, repeat: Infinity }}
+                      className="relative z-10 text-[150px]"
+                    >
+                      🏛️
+                    </motion.div>
+                  </div>
 
-          <div className="grid md:grid-cols-2 gap-12 items-center relative z-10">
-            <div>
-              <h3 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
-                Our Story
-              </h3>
-              <p className="text-lg text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">
-                Founded in 2025 in the heart of Sitamarhi,{" "}
-                <span className="text-primary font-semibold">Shaahi Aagan</span>{" "}
-                has been serving authentic Indian cuisine with a royal touch.
-                Our journey started with a simple mission - to bring the rich
-                flavors of traditional recipes to modern dining.
-              </p>
-              <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-                Today, we&apos;re proud to be Sitamarhi&apos;s favorite dining
-                destination, serving over 10,000 happy customers with our
-                signature dishes and warm hospitality.
-              </p>
-            </div>
-
-            <motion.div
-              animate={{
-                y: [0, -20, 0],
-                rotateY: [0, 5, 0],
-              }}
-              transition={{ duration: 5, repeat: Infinity }}
-              className="relative"
-            >
-              <div className="glass rounded-2xl p-8 card-3d">
-                <div className="bg-gradient-to-br from-primary/20 to-purple-500/20 rounded-xl h-64 flex items-center justify-center">
+                  {/* Floating Stats Cards */}
                   <motion.div
-                    animate={{ rotate: [0, 360] }}
-                    transition={{
-                      duration: 20,
-                      repeat: Infinity,
-                      ease: "linear",
-                    }}
-                    className="text-9xl"
+                    animate={{ y: [0, -10, 0] }}
+                    transition={{ duration: 3, repeat: Infinity }}
+                    className="absolute -top-6 -right-6 ultra-glass rounded-2xl p-4 shadow-2xl"
                   >
-                    🍽️
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-primary/20 rounded-xl">
+                        <Award className="w-6 h-6 text-primary" />
+                      </div>
+                      <div>
+                        <p className="text-2xl font-bold text-white">14+</p>
+                        <p className="text-xs text-gray-400">Years Legacy</p>
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  <motion.div
+                    animate={{ y: [0, 10, 0] }}
+                    transition={{ duration: 3.5, repeat: Infinity }}
+                    className="absolute -bottom-6 -left-6 ultra-glass rounded-2xl p-4 shadow-2xl"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-green-500/20 rounded-xl">
+                        <Users className="w-6 h-6 text-green-500" />
+                      </div>
+                      <div>
+                        <p className="text-2xl font-bold text-white">1M+</p>
+                        <p className="text-xs text-gray-400">Guests Served</p>
+                      </div>
+                    </div>
                   </motion.div>
                 </div>
-              </div>
-              <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-purple-500/20 blur-2xl -z-10 rounded-2xl" />
-            </motion.div>
-          </div>
-        </motion.div>
+              </motion.div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-          {features.map((feature, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              whileHover={{ scale: 1.05, rotateY: 10 }}
-              className="group relative"
-            >
-              <div className="glass card-3d rounded-2xl p-6 h-full relative overflow-hidden">
-                <div
-                  className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
-                />
+              {/* Glow */}
+              <div className="absolute -inset-4 bg-gradient-to-r from-primary/10 to-purple-500/10 blur-3xl -z-10 rounded-[50px]" />
+            </div>
+          </motion.div>
 
+          {/* Right - Content */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+          >
+            <h3 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900 dark:text-white">
+              A Legacy of{' '}
+              <span className="text-gradient">Royal Flavors</span>
+            </h3>
+            
+            <p className="text-lg text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
+              Founded in 2010 in the heart of Sitamarhi, <span className="text-primary font-semibold">Shaahi Aagan</span> was born from a passion to bring authentic royal Indian cuisine to Bihar. Our founder, Chef Rajendra Singh, dreamed of creating a place where traditional recipes meet modern hospitality.
+            </p>
+            
+            <p className="text-lg text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
+              Today, we&apos;re proud to be the region&apos;s most beloved restaurant, serving over <span className="text-primary font-semibold">1 million happy customers</span> with our signature dishes and warm, royal hospitality.
+            </p>
+
+            {/* Timeline */}
+            <div className="space-y-4">
+              {milestones.map((milestone, i) => (
                 <motion.div
-                  whileHover={{ rotate: 360, scale: 1.2 }}
-                  transition={{ duration: 0.6 }}
-                  className="relative z-10 mb-4"
+                  key={i}
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="flex items-start gap-4 group"
                 >
-                  <div className="p-4 glass rounded-2xl inline-block">
-                    <feature.icon className="w-8 h-8 text-primary" />
+                  <div className="flex-shrink-0 w-16 h-16 ultra-glass rounded-2xl flex items-center justify-center group-hover:glow transition-all duration-300">
+                    <span className="text-primary font-bold">{milestone.year}</span>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-white mb-1">{milestone.title}</h4>
+                    <p className="text-sm text-gray-400">{milestone.description}</p>
                   </div>
                 </motion.div>
-
-                <div className="relative z-10">
-                  <h3 className="text-2xl font-bold mb-1 text-gray-900 dark:text-white">
-                    {feature.title}
-                  </h3>
-                  <p className="text-sm text-primary mb-3">
-                    {feature.titleHindi}
-                  </p>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    {feature.description}
-                  </p>
-                </div>
-
-                <div className="absolute bottom-4 right-4 text-5xl opacity-20 group-hover:opacity-40 transition-opacity">
-                  {feature.emoji}
-                </div>
-
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-              </div>
-            </motion.div>
-          ))}
+              ))}
+            </div>
+          </motion.div>
         </div>
 
+        {/* Features Grid */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="glass rounded-3xl p-8 md:p-12 relative overflow-hidden"
+          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-purple-500/5" />
+          {features.map((feature, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              whileHover={{ scale: 1.03, y: -5 }}
+              className="group relative"
+            >
+              <div className="ultra-glass card-4d rounded-3xl p-6 h-full relative overflow-hidden shine">
+                {/* Background Gradient on Hover */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.5 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ scale: 1.1, y: -10 }}
-                className="text-center"
-              >
-                <motion.div
-                  animate={{
-                    scale: [1, 1.1, 1],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    delay: index * 0.2,
-                  }}
-                  className="text-4xl md:text-6xl font-bold text-gradient mb-2"
-                >
-                  {stat.value}
-                </motion.div>
-                <div className="text-gray-700 dark:text-gray-300 font-semibold">
-                  {stat.label}
+                {/* Icon & Emoji */}
+                <div className="flex items-center justify-between mb-4">
+                  <motion.div
+                    whileHover={{ rotate: 360, scale: 1.2 }}
+                    transition={{ duration: 0.6 }}
+                    className="p-3 ultra-glass rounded-2xl"
+                  >
+                    <feature.icon className="w-6 h-6 text-primary" />
+                  </motion.div>
+                  <span className="text-4xl opacity-50 group-hover:opacity-100 transition-opacity">
+                    {feature.emoji}
+                  </span>
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
-                  {stat.labelHindi}
+
+                {/* Content */}
+                <h3 className="text-xl font-bold text-white mb-1">{feature.title}</h3>
+                <p className="text-sm text-primary mb-3">{feature.titleHindi}</p>
+                <p className="text-gray-400 text-sm mb-4">{feature.description}</p>
+
+                {/* Stat */}
+                <div className="flex items-center gap-2 pt-4 border-t border-white/10">
+                  <span className="text-2xl font-bold text-gradient">{feature.stat}</span>
+                  <span className="text-xs text-gray-500">{feature.statLabel}</span>
                 </div>
-              </motion.div>
-            ))}
-          </div>
+              </div>
+            </motion.div>
+          ))}
         </motion.div>
       </div>
     </section>

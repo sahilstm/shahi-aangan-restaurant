@@ -2,28 +2,25 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import { ChefHat } from 'lucide-react';
 
 const Loader = ({ children }: { children: React.ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    // Simulate loading progress
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
           return 100;
         }
-        return prev + Math.random() * 15;
+        return prev + Math.random() * 10;
       });
-    }, 150);
+    }, 100);
 
-    // Minimum loading time for smooth UX
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2500);
+    }, 3000);
 
     return () => {
       clearInterval(interval);
@@ -31,216 +28,238 @@ const Loader = ({ children }: { children: React.ReactNode }) => {
     };
   }, []);
 
+  const foodEmojis = ['🍛', '🥘', '🍜', '🥙', '🍲', '🧆', '🍗', '🥗'];
+
   return (
     <AnimatePresence mode="wait">
       {isLoading ? (
         <motion.div
           key="loader"
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0, scale: 1.1 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
-          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-gray-800 to-black overflow-hidden"
+          exit={{ 
+            opacity: 0,
+            scale: 1.2,
+            filter: 'blur(20px)'
+          }}
+          transition={{ duration: 0.8, ease: "easeInOut" }}
+          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center overflow-hidden"
         >
-          {/* Animated Background Circles */}
-          <div className="absolute inset-0 overflow-hidden">
-            {[...Array(5)].map((_, i) => (
+          {/* Animated Mesh Background */}
+          <div className="absolute inset-0 bg-mesh">
+            {/* Floating Orbs */}
+            {[...Array(8)].map((_, i) => (
               <motion.div
                 key={i}
                 animate={{
-                  scale: [1, 2, 1],
-                  opacity: [0.1, 0.3, 0.1],
-                  rotate: [0, 180, 360],
+                  scale: [1, 1.5, 1],
+                  opacity: [0.3, 0.6, 0.3],
+                  x: [0, 50, 0],
+                  y: [0, -50, 0],
                 }}
                 transition={{
-                  duration: 4 + i,
+                  duration: 5 + i,
                   repeat: Infinity,
                   ease: "easeInOut",
-                  delay: i * 0.5,
+                  delay: i * 0.3,
                 }}
-                className="absolute rounded-full bg-gradient-to-r from-primary/30 to-purple-500/30 blur-3xl"
+                className="absolute rounded-full blur-3xl"
                 style={{
-                  width: `${200 + i * 100}px`,
-                  height: `${200 + i * 100}px`,
-                  left: `${20 + i * 15}%`,
-                  top: `${10 + i * 15}%`,
+                  width: `${150 + i * 50}px`,
+                  height: `${150 + i * 50}px`,
+                  background: i % 2 === 0 
+                    ? 'radial-gradient(circle, rgba(212,175,55,0.3) 0%, transparent 70%)'
+                    : 'radial-gradient(circle, rgba(139,92,246,0.2) 0%, transparent 70%)',
+                  left: `${(i * 15) % 80}%`,
+                  top: `${(i * 12) % 80}%`,
                 }}
               />
             ))}
           </div>
 
-          {/* Main Loader Content */}
+          {/* Main Content */}
           <div className="relative z-10 flex flex-col items-center">
-            {/* Rotating Ring */}
-            <div className="relative w-40 h-40 mb-8">
-              {/* Outer Ring */}
+            {/* 4D Rotating Plate */}
+            <div className="relative w-48 h-48 mb-10 perspective-1000">
+              {/* Outer Glow Ring */}
               <motion.div
                 animate={{ rotate: 360 }}
-                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-0 rounded-full border-4 border-transparent border-t-primary border-r-primary/50"
-              />
-              
+                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-0"
+              >
+                <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-primary border-r-primary/30 glow" />
+              </motion.div>
+
               {/* Middle Ring */}
               <motion.div
                 animate={{ rotate: -360 }}
-                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-4 rounded-full border-4 border-transparent border-b-primary-light border-l-primary-light/50"
-              />
+                transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-6"
+              >
+                <div className="absolute inset-0 rounded-full border-4 border-transparent border-b-primary-light border-l-primary-light/30" />
+              </motion.div>
 
               {/* Inner Ring */}
               <motion.div
                 animate={{ rotate: 360 }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-8 rounded-full border-4 border-transparent border-t-purple-500 border-r-purple-500/50"
-              />
+                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-12"
+              >
+                <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-purple-500 border-r-purple-500/30" />
+              </motion.div>
 
-              {/* Center Logo */}
+              {/* Center Plate */}
               <motion.div
                 animate={{
-                  scale: [1, 1.2, 1],
-                  rotate: [0, 10, -10, 0],
+                  rotateY: [0, 360],
+                  scale: [1, 1.1, 1],
                 }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="absolute inset-0 flex items-center justify-center"
+                transition={{
+                  rotateY: { duration: 4, repeat: Infinity, ease: "linear" },
+                  scale: { duration: 2, repeat: Infinity, ease: "easeInOut" },
+                }}
+                className="absolute inset-16 rounded-full ultra-glass flex items-center justify-center preserve-3d"
               >
-                <div className="relative">
-                  <motion.div
-                    animate={{ opacity: [0.5, 1, 0.5] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
-                    className="absolute inset-0 bg-primary rounded-full blur-xl"
-                  />
-                  <ChefHat className="relative w-12 h-12 text-primary" />
-                </div>
+                <motion.span
+                  animate={{ rotate: [0, 10, -10, 0] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="text-5xl"
+                >
+                  🍽️
+                </motion.span>
               </motion.div>
+
+              {/* Floating Food Items */}
+              {foodEmojis.slice(0, 6).map((emoji, i) => (
+                <motion.div
+                  key={i}
+                  animate={{
+                    rotate: 360,
+                  }}
+                  transition={{
+                    duration: 6,
+                    repeat: Infinity,
+                    ease: "linear",
+                    delay: i * 0.5,
+                  }}
+                  className="absolute inset-0"
+                  style={{ transformOrigin: 'center center' }}
+                >
+                  <motion.span
+                    animate={{
+                      scale: [1, 1.3, 1],
+                      opacity: [0.7, 1, 0.7],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      delay: i * 0.3,
+                    }}
+                    className="absolute text-2xl"
+                    style={{
+                      left: '50%',
+                      top: '-10px',
+                      transform: 'translateX(-50%)',
+                    }}
+                  >
+                    {emoji}
+                  </motion.span>
+                </motion.div>
+              ))}
             </div>
 
             {/* Restaurant Name */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="text-center mb-8"
+              transition={{ delay: 0.3, duration: 0.8 }}
+              className="text-center mb-10"
             >
               <motion.h1
                 animate={{
-                  backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+                  textShadow: [
+                    '0 0 20px rgba(212,175,55,0.5)',
+                    '0 0 40px rgba(212,175,55,0.8)',
+                    '0 0 20px rgba(212,175,55,0.5)',
+                  ],
                 }}
-                transition={{ duration: 3, repeat: Infinity }}
-                className="text-5xl md:text-6xl font-bold mb-2 font-[family-name:var(--font-playfair)]"
-                style={{
-                  background: 'linear-gradient(90deg, #d4af37, #f4d03f, #d4af37, #f4d03f)',
-                  backgroundSize: '200% auto',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="text-6xl md:text-7xl font-bold text-gradient mb-3 font-[family-name:var(--font-playfair)]"
               >
                 शाही आगन
               </motion.h1>
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="text-gray-400 text-lg"
+                transition={{ delay: 0.6 }}
+                className="text-xl text-gray-400 tracking-widest uppercase"
               >
-                Shaahi Aagan Restaurant
+                Royal Dining Experience
               </motion.p>
             </motion.div>
 
-            {/* Loading Bar */}
-            <div className="w-64 md:w-80 mb-4">
-              <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
+            {/* Progress Bar */}
+            <div className="w-72 md:w-96 mb-6">
+              <div className="relative h-2 bg-gray-800/50 rounded-full overflow-hidden ultra-glass">
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${Math.min(progress, 100)}%` }}
-                  transition={{ duration: 0.3 }}
-                  className="h-full bg-gradient-to-r from-primary via-primary-light to-primary rounded-full relative"
+                  className="absolute inset-y-0 left-0 bg-gradient-to-r from-primary via-primary-light to-primary rounded-full"
                 >
-                  {/* Shimmer Effect */}
+                  {/* Animated Shine */}
                   <motion.div
-                    animate={{ x: ['-100%', '200%'] }}
-                    transition={{ duration: 1, repeat: Infinity }}
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                    animate={{ x: ['-100%', '300%'] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
                   />
                 </motion.div>
               </div>
+              <motion.p
+                animate={{ opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+                className="text-center text-sm text-gray-500 mt-3"
+              >
+                {Math.min(Math.round(progress), 100)}% Loaded
+              </motion.p>
             </div>
 
-            {/* Loading Text */}
-            <motion.div
-              animate={{ opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-              className="flex items-center gap-2 text-gray-400"
-            >
-              <span>Preparing your royal experience</span>
-              <motion.span
-                animate={{ opacity: [0, 1, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity, delay: 0 }}
-              >
-                .
-              </motion.span>
-              <motion.span
-                animate={{ opacity: [0, 1, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity, delay: 0.2 }}
-              >
-                .
-              </motion.span>
-              <motion.span
-                animate={{ opacity: [0, 1, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity, delay: 0.4 }}
-              >
-                .
-              </motion.span>
-            </motion.div>
-
-            {/* Floating Food Emojis */}
-            <div className="absolute inset-0 pointer-events-none overflow-hidden">
-              {['🍛', '🥘', '🍜', '🥙', '🍲', '🧆'].map((emoji, i) => (
-                <motion.div
+            {/* Loading Text with Dots */}
+            <motion.div className="flex items-center gap-1 text-gray-400">
+              <span>Preparing your royal feast</span>
+              {[0, 1, 2].map((i) => (
+                <motion.span
                   key={i}
-                  initial={{
-                    x: Math.random() * 400 - 200,
-                    y: 300,
-                    opacity: 0,
-                    rotate: 0,
-                  }}
-                  animate={{
-                    y: -300,
-                    opacity: [0, 1, 1, 0],
-                    rotate: 360,
-                  }}
+                  animate={{ opacity: [0, 1, 0], y: [0, -5, 0] }}
                   transition={{
-                    duration: 4,
+                    duration: 1,
                     repeat: Infinity,
-                    delay: i * 0.8,
-                    ease: "easeOut",
+                    delay: i * 0.2,
                   }}
-                  className="absolute text-4xl"
-                  style={{
-                    left: `${15 + i * 15}%`,
-                  }}
+                  className="text-primary font-bold"
                 >
-                  {emoji}
-                </motion.div>
+                  .
+                </motion.span>
               ))}
-            </div>
+            </motion.div>
           </div>
 
-          {/* Bottom Tagline */}
-          <motion.p
+          {/* Bottom Decoration */}
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1 }}
-            className="absolute bottom-10 text-gray-500 text-sm"
+            className="absolute bottom-8 flex items-center gap-4 text-gray-600"
           >
-            Sitamarhi&apos;s Finest Dining Experience
-          </motion.p>
+            <div className="h-px w-16 bg-gradient-to-r from-transparent to-primary/50" />
+            <span className="text-sm">Since 2010</span>
+            <div className="h-px w-16 bg-gradient-to-l from-transparent to-primary/50" />
+          </motion.div>
         </motion.div>
       ) : (
         <motion.div
           key="content"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
         >
           {children}
         </motion.div>

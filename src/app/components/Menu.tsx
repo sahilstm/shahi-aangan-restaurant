@@ -1,288 +1,472 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import { Plus, Star, Flame, Leaf } from "lucide-react";
-import { useState } from "react";
+import { motion, AnimatePresence } from 'framer-motion';
+import { Plus, Star, Flame, Leaf, Clock, Filter, Search, ChevronRight } from 'lucide-react';
+import { useState, useMemo } from 'react';
 
 interface MenuItem {
   id: number;
   name: string;
   nameHindi: string;
-  price: string;
+  price: number;
+  originalPrice?: number;
   description: string;
   emoji: string;
   category: string;
   rating: number;
+  reviews: number;
+  time: string;
   spicy?: boolean;
   veg: boolean;
-  popular?: boolean;
+  bestseller?: boolean;
+  new?: boolean;
 }
 
 const Menu = () => {
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [activeCategory, setActiveCategory] = useState('All');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortBy, setSortBy] = useState('popular');
 
-  const categories = ["All", "Main Course", "Starters", "Breads", "Desserts"];
+  const categories = [
+    { name: 'All', emoji: '🍽️', count: 24 },
+    { name: 'Starters', emoji: '🥗', count: 6 },
+    { name: 'Main Course', emoji: '🍛', count: 8 },
+    { name: 'Biryani', emoji: '🍚', count: 4 },
+    { name: 'Breads', emoji: '🫓', count: 5 },
+    { name: 'Desserts', emoji: '🍮', count: 4 },
+    { name: 'Beverages', emoji: '🥤', count: 5 },
+  ];
 
   const menuItems: MenuItem[] = [
     {
       id: 1,
-      name: "Royal Biryani",
-      nameHindi: "शाही बिरयानी",
-      price: "₹250",
-      description: "Aromatic basmati rice with tender meat and exotic spices",
-      emoji: "🍛",
-      category: "Main Course",
+      name: 'Royal Dum Biryani',
+      nameHindi: 'शाही दम बिरयानी',
+      price: 349,
+      originalPrice: 449,
+      description: 'Aromatic basmati rice with tender meat & exotic spices',
+      emoji: '🍛',
+      category: 'Biryani',
       rating: 4.9,
+      reviews: 2847,
+      time: '45 min',
       spicy: true,
       veg: false,
-      popular: true,
+      bestseller: true,
     },
     {
       id: 2,
-      name: "Paneer Tikka",
-      nameHindi: "पनीर टिक्का",
-      price: "₹180",
-      description: "Grilled cottage cheese marinated in spices",
-      emoji: "🧈",
-      category: "Starters",
+      name: 'Paneer Tikka',
+      nameHindi: 'पनीर टिक्का',
+      price: 229,
+      description: 'Chargrilled cottage cheese with mint chutney',
+      emoji: '🧀',
+      category: 'Starters',
       rating: 4.8,
+      reviews: 1893,
+      time: '20 min',
       spicy: true,
       veg: true,
-      popular: true,
+      bestseller: true,
     },
     {
       id: 3,
-      name: "Butter Chicken",
-      nameHindi: "बटर चिकन",
-      price: "₹220",
-      description: "Creamy tomato gravy with tender chicken pieces",
-      emoji: "🍗",
-      category: "Main Course",
+      name: 'Butter Chicken',
+      nameHindi: 'बटर चिकन',
+      price: 299,
+      originalPrice: 379,
+      description: 'Creamy tomato curry with tandoori chicken',
+      emoji: '🍗',
+      category: 'Main Course',
       rating: 4.9,
+      reviews: 2156,
+      time: '30 min',
       veg: false,
+      bestseller: true,
     },
     {
       id: 4,
-      name: "Dal Makhani",
-      nameHindi: "दाल मखनी",
-      price: "₹150",
-      description: "Slow cooked black lentils with butter and cream",
-      emoji: "🥘",
-      category: "Main Course",
+      name: 'Dal Makhani',
+      nameHindi: 'दाल मखनी',
+      price: 189,
+      description: 'Slow-cooked black lentils with butter & cream',
+      emoji: '🥘',
+      category: 'Main Course',
       rating: 4.7,
+      reviews: 1654,
+      time: '25 min',
       veg: true,
     },
     {
       id: 5,
-      name: "Tandoori Roti",
-      nameHindi: "तंदूरी रोटी",
-      price: "₹20",
-      description: "Fresh clay oven baked bread",
-      emoji: "🫓",
-      category: "Breads",
+      name: 'Tandoori Roti',
+      nameHindi: 'तंदूरी रोटी',
+      price: 25,
+      description: 'Fresh clay oven baked whole wheat bread',
+      emoji: '🫓',
+      category: 'Breads',
       rating: 4.6,
+      reviews: 3421,
+      time: '5 min',
       veg: true,
     },
     {
       id: 6,
-      name: "Gulab Jamun",
-      nameHindi: "गुलाब जामुन",
-      price: "₹60",
-      description: "Sweet milk dumplings in sugar syrup",
-      emoji: "🍮",
-      category: "Desserts",
+      name: 'Gulab Jamun',
+      nameHindi: 'गुलाब जामुन',
+      price: 99,
+      description: 'Sweet milk dumplings in rose-flavored syrup',
+      emoji: '🍮',
+      category: 'Desserts',
       rating: 4.8,
+      reviews: 2087,
+      time: '10 min',
       veg: true,
-      popular: true,
+      bestseller: true,
     },
     {
       id: 7,
-      name: "Malai Kofta",
-      nameHindi: "मलाई कोफ्ता",
-      price: "₹190",
-      description: "Cottage cheese balls in rich creamy gravy",
-      emoji: "🥙",
-      category: "Main Course",
-      rating: 4.7,
-      veg: true,
-    },
-    {
-      id: 8,
-      name: "Tandoori Chicken",
-      nameHindi: "तंदूरी चिकन",
-      price: "₹280",
-      description: "Clay oven roasted chicken with spices",
-      emoji: "🍖",
-      category: "Starters",
-      rating: 4.9,
+      name: 'Chicken Tikka',
+      nameHindi: 'चिकन टिक्का',
+      price: 279,
+      description: 'Spiced yogurt marinated grilled chicken',
+      emoji: '🍖',
+      category: 'Starters',
+      rating: 4.8,
+      reviews: 1789,
+      time: '25 min',
       spicy: true,
       veg: false,
     },
+    {
+      id: 8,
+      name: 'Veg Biryani',
+      nameHindi: 'वेज बिरयानी',
+      price: 249,
+      description: 'Fragrant rice with seasonal vegetables & saffron',
+      emoji: '🍚',
+      category: 'Biryani',
+      rating: 4.7,
+      reviews: 1456,
+      time: '40 min',
+      veg: true,
+      new: true,
+    },
+    {
+      id: 9,
+      name: 'Masala Chai',
+      nameHindi: 'मसाला चाय',
+      price: 49,
+      description: 'Traditional spiced Indian tea with milk',
+      emoji: '☕',
+      category: 'Beverages',
+      rating: 4.9,
+      reviews: 4521,
+      time: '5 min',
+      veg: true,
+    },
+    {
+      id: 10,
+      name: 'Mango Lassi',
+      nameHindi: 'मैंगो लस्सी',
+      price: 89,
+      description: 'Creamy yogurt smoothie with fresh mango',
+      emoji: '🥭',
+      category: 'Beverages',
+      rating: 4.8,
+      reviews: 2341,
+      time: '5 min',
+      veg: true,
+      new: true,
+    },
+    {
+      id: 11,
+      name: 'Mutton Rogan Josh',
+      nameHindi: 'मटन रोगन जोश',
+      price: 399,
+      description: 'Kashmiri style slow-cooked mutton curry',
+      emoji: '🍖',
+      category: 'Main Course',
+      rating: 4.9,
+      reviews: 1234,
+      time: '50 min',
+      spicy: true,
+      veg: false,
+    },
+    {
+      id: 12,
+      name: 'Naan',
+      nameHindi: 'नान',
+      price: 45,
+      description: 'Soft leavened bread from clay oven',
+      emoji: '🥖',
+      category: 'Breads',
+      rating: 4.7,
+      reviews: 2890,
+      time: '8 min',
+      veg: true,
+    },
   ];
 
-  const filteredItems =
-    activeCategory === "All"
-      ? menuItems
-      : menuItems.filter((item) => item.category === activeCategory);
+  const filteredItems = useMemo(() => {
+    let items = menuItems;
+    
+    if (activeCategory !== 'All') {
+      items = items.filter(item => item.category === activeCategory);
+    }
+    
+    if (searchQuery) {
+      items = items.filter(item => 
+        item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.nameHindi.includes(searchQuery)
+      );
+    }
+    
+    switch (sortBy) {
+      case 'price-low':
+        items = [...items].sort((a, b) => a.price - b.price);
+        break;
+      case 'price-high':
+        items = [...items].sort((a, b) => b.price - a.price);
+        break;
+      case 'rating':
+        items = [...items].sort((a, b) => b.rating - a.rating);
+        break;
+      default:
+        items = [...items].sort((a, b) => b.reviews - a.reviews);
+    }
+    
+    return items;
+  }, [activeCategory, searchQuery, sortBy]);
 
   return (
     <section id="menu" className="py-20 md:py-32 relative overflow-hidden">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-          className="absolute top-20 right-20 w-72 h-72 bg-primary/5 rounded-full blur-3xl"
-        />
+      {/* Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 left-0 w-[400px] h-[400px] bg-purple-500/5 rounded-full blur-3xl" />
       </div>
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-12"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.5 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="inline-block mb-4"
+            className="inline-flex items-center gap-2 px-5 py-2 ultra-glass rounded-full mb-6"
           >
-            <div className="px-4 py-2 glass rounded-full inline-flex items-center gap-2">
-              <span className="text-2xl">🍽️</span>
-              <span className="text-primary font-semibold">Our Menu</span>
-            </div>
+            <span className="text-2xl">🍽️</span>
+            <span className="text-primary font-semibold">Our Menu</span>
           </motion.div>
 
-          <h2 className="text-4xl md:text-6xl font-bold mb-4 text-gray-900 dark:text-white font-[family-name:var(--font-playfair)]">
-            Discover Our <span className="text-gradient">Delicious Menu</span>
+          <h2 className="section-title text-gray-900 dark:text-white">
+            Explore Our{' '}
+            <span className="text-gradient">Delicious Menu</span>
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-400">
-            हमारा स्वादिष्ट मेनू देखें
+          <p className="section-subtitle mt-4">
+            हमारा स्वादिष्ट मेनू - Authentic flavors, royal taste
           </p>
         </motion.div>
 
+        {/* Search & Filter Bar */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="flex flex-wrap justify-center gap-4 mb-12"
+          className="flex flex-col md:flex-row gap-4 mb-8"
+        >
+          {/* Search */}
+          <div className="relative flex-1">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search dishes..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-12 pr-4 py-4 ultra-glass rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+            />
+          </div>
+
+          {/* Sort */}
+          <div className="relative">
+            <Filter className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="pl-12 pr-8 py-4 ultra-glass rounded-2xl text-white appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/50 min-w-[180px]"
+            >
+              <option value="popular">Most Popular</option>
+              <option value="rating">Top Rated</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+            </select>
+          </div>
+        </motion.div>
+
+        {/* Category Tabs */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="flex overflow-x-auto gap-3 pb-4 mb-10 scrollbar-hide"
         >
           {categories.map((category, index) => (
             <motion.button
-              key={category}
+              key={category.name}
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
+              transition={{ delay: index * 0.05 }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => setActiveCategory(category)}
-              className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
-                activeCategory === category
-                  ? "bg-gradient-to-r from-primary to-primary-light text-black shadow-lg shadow-primary/50"
-                  : "glass glass-hover"
+              onClick={() => setActiveCategory(category.name)}
+              className={`flex-shrink-0 flex items-center gap-2 px-6 py-3 rounded-2xl font-medium transition-all duration-300 ${
+                activeCategory === category.name
+                  ? 'bg-gradient-to-r from-primary to-primary-light text-black shadow-lg shadow-primary/50'
+                  : 'ultra-glass text-gray-300 hover:text-white hover:border-primary/30'
               }`}
             >
-              {category}
+              <span className="text-xl">{category.emoji}</span>
+              <span>{category.name}</span>
+              <span className={`text-xs px-2 py-0.5 rounded-full ${
+                activeCategory === category.name
+                  ? 'bg-black/20'
+                  : 'bg-white/10'
+              }`}>
+                {category.count}
+              </span>
             </motion.button>
           ))}
         </motion.div>
 
-        <motion.div
-          layout
-          className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-        >
-          {filteredItems.map((item, index) => (
-            <motion.div
-              key={item.id}
-              layout
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ delay: index * 0.1 }}
-              whileHover={{ y: -10 }}
-              className="group relative"
-            >
-              <div className="glass card-3d rounded-2xl p-6 h-full relative overflow-hidden shine">
-                <div className="absolute top-0 right-0 text-8xl opacity-5 pointer-events-none">
-                  {item.emoji}
-                </div>
-
-                <div className="flex gap-2 mb-4 relative z-10">
-                  {item.veg && (
-                    <div className="p-1.5 glass rounded-lg">
-                      <Leaf className="w-4 h-4 text-green-500" />
-                    </div>
-                  )}
-                  {item.spicy && (
-                    <div className="p-1.5 glass rounded-lg">
-                      <Flame className="w-4 h-4 text-red-500" />
-                    </div>
-                  )}
-                  {item.popular && (
-                    <div className="px-2 py-1 bg-primary/20 rounded-lg">
-                      <span className="text-xs font-semibold text-primary">
-                        Popular
+        {/* Menu Grid */}
+        <motion.div layout className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <AnimatePresence mode="popLayout">
+            {filteredItems.map((item, index) => (
+              <motion.div
+                key={item.id}
+                layout
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ delay: index * 0.05 }}
+                whileHover={{ y: -10 }}
+                className="group"
+              >
+                <div className="ultra-glass card-4d rounded-3xl p-5 h-full relative overflow-hidden shine">
+                  {/* Badges */}
+                  <div className="absolute top-4 left-4 z-10 flex gap-2">
+                    {item.veg && (
+                      <span className="p-1.5 bg-green-500/20 rounded-lg">
+                        <Leaf className="w-4 h-4 text-green-500" />
                       </span>
+                    )}
+                    {item.spicy && (
+                      <span className="p-1.5 bg-red-500/20 rounded-lg">
+                        <Flame className="w-4 h-4 text-red-500" />
+                      </span>
+                    )}
+                  </div>
+
+                  {item.bestseller && (
+                    <div className="absolute top-4 right-4 z-10 px-2 py-1 bg-primary text-black text-xs font-bold rounded-full">
+                      Bestseller
                     </div>
                   )}
-                </div>
 
-                <motion.div
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  className="text-6xl mb-4"
-                >
-                  {item.emoji}
-                </motion.div>
+                  {item.new && (
+                    <div className="absolute top-4 right-4 z-10 px-2 py-1 bg-blue-500 text-white text-xs font-bold rounded-full">
+                      New
+                    </div>
+                  )}
 
-                <div className="relative z-10">
-                  <h3 className="text-2xl font-bold mb-1 text-gray-900 dark:text-white">
-                    {item.name}
-                  </h3>
-                  <p className="text-sm text-primary mb-2">{item.nameHindi}</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                    {item.description}
-                  </p>
-
-                  <div className="flex items-center gap-1 mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`w-4 h-4 ${
-                          i < Math.floor(item.rating)
-                            ? "text-yellow-500 fill-yellow-500"
-                            : "text-gray-300"
-                        }`}
-                      />
-                    ))}
-                    <span className="text-sm text-gray-600 dark:text-gray-400 ml-1">
-                      {item.rating}
-                    </span>
-                  </div>
-
-                  <div className="flex justify-between items-center">
-                    <span className="text-3xl font-bold text-primary">
-                      {item.price}
-                    </span>
-                    <motion.button
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      className="p-3 bg-gradient-to-r from-primary to-primary-light text-black rounded-full shadow-lg shadow-primary/50 hover:shadow-xl hover:shadow-primary/70 transition-all"
+                  {/* Image/Emoji */}
+                  <div className="relative h-40 bg-gradient-to-br from-primary/10 to-purple-500/10 rounded-2xl flex items-center justify-center mb-4 overflow-hidden">
+                    <motion.div
+                      whileHover={{ scale: 1.2, rotate: 10 }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                      className="text-7xl relative z-10"
                     >
-                      <Plus className="w-5 h-5" />
-                    </motion.button>
+                      {item.emoji}
+                    </motion.div>
+                    
+                    {/* Background Pattern */}
+                    <div className="absolute inset-0 opacity-30">
+                      <div className="absolute top-2 left-2 text-2xl opacity-30">✨</div>
+                      <div className="absolute bottom-2 right-2 text-2xl opacity-30">🌿</div>
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div>
+                    <h3 className="text-lg font-bold text-white mb-0.5 line-clamp-1">
+                      {item.name}
+                    </h3>
+                    <p className="text-xs text-primary mb-2">{item.nameHindi}</p>
+                    <p className="text-sm text-gray-400 line-clamp-2 mb-3">
+                      {item.description}
+                    </p>
+
+                    {/* Rating & Time */}
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="flex items-center gap-1">
+                        <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                        <span className="text-sm font-medium text-white">{item.rating}</span>
+                        <span className="text-xs text-gray-500">({item.reviews})</span>
+                      </div>
+                      <div className="flex items-center gap-1 text-gray-400">
+                        <Clock className="w-3 h-3" />
+                        <span className="text-xs">{item.time}</span>
+                      </div>
+                    </div>
+
+                    {/* Price & Add Button */}
+                    <div className="flex items-center justify-between">
+                      <div>
+                        {item.originalPrice && (
+                          <span className="text-sm text-gray-500 line-through mr-2">
+                            ₹{item.originalPrice}
+                          </span>
+                        )}
+                        <span className="text-2xl font-bold text-gradient">
+                          ₹{item.price}
+                        </span>
+                      </div>
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        className="p-3 bg-gradient-to-r from-primary to-primary-light rounded-xl text-black shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/50 transition-all"
+                      >
+                        <Plus className="w-5 h-5" />
+                      </motion.button>
+                    </div>
                   </div>
                 </div>
-
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/5 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-              </div>
-
-              <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-purple-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
-            </motion.div>
-          ))}
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </motion.div>
 
+        {/* No Results */}
+        {filteredItems.length === 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-center py-20"
+          >
+            <span className="text-6xl mb-4 block">🔍</span>
+            <h3 className="text-xl font-bold text-white mb-2">No dishes found</h3>
+            <p className="text-gray-400">Try adjusting your search or filter</p>
+          </motion.div>
+        )}
+
+        {/* View All CTA */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -292,16 +476,10 @@ const Menu = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="px-8 py-4 glass glass-hover rounded-full font-bold text-lg group"
+            className="inline-flex items-center gap-2 btn-glass"
           >
-            View Full Menu
-            <motion.span
-              animate={{ x: [0, 5, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-              className="inline-block ml-2"
-            >
-              →
-            </motion.span>
+            View Complete Menu
+            <ChevronRight className="w-5 h-5" />
           </motion.button>
         </motion.div>
       </div>
