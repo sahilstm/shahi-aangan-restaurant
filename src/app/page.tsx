@@ -1,3 +1,4 @@
+import Loader from "./components/Loader";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
@@ -9,15 +10,17 @@ import Footer from "./components/Footer";
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
-      <Navbar />
-      <Hero />
-      <About />
-      <Menu />
-      <Gallery />
-      <Testimonials />
-      <Contact />
-      <Footer />
-    </main>
+    <Loader>
+      <main className="min-h-screen">
+        <Navbar />
+        <Hero />
+        <About />
+        <Menu />
+        <Gallery />
+        <Testimonials />
+        <Contact />
+        <Footer />
+      </main>
+    </Loader>
   );
 }
